@@ -2,10 +2,15 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import formData from "express-form-data";
+import { fileURLToPath } from "url";
+import path from "path";
 
 import { connectDB } from "./db/index.js";
 import routes from "./routes/index.js";
 import errorHandler from "./mw/error-handler.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 

@@ -28,8 +28,9 @@ app.use(formData.parse());
 app.use("/api", routes);
 app.use(errorHandler);
 
+app.use(express.static("client/build"));
 app.use("*", (_, res) => {
-  res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 
 connectDB();

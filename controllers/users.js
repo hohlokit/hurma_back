@@ -4,6 +4,25 @@ import { Users } from "../models/users.js";
 import saveFile from "../utils/save-file.js";
 import userStatuses from "../enums/user-statuses.js";
 
+export const getSelf = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+
+    const user = await Users.findOne(
+      { id },
+      {
+        password: 0,
+        loginCode: 0,
+        _id: 0,
+        __v: 0,
+      }
+    );
+    return res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const createUser = async (req, res, next) => {
   try {
     const { email, firstName, lastName, surname, phone, birthday } = req.body;
@@ -79,7 +98,7 @@ export const getUsers = async (req, res, next) => {
     const query = {};
     const users = await Users.find(query).skip(_offset).limit(_limit);
     const count = await Users.countDocuments(query);
-    
+
     return res.status(200).json({ count, users });
   } catch (error) {
     next(error);

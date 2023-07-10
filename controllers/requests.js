@@ -29,7 +29,7 @@ export const updateRequest = async (req, res, next) => {
 export const getRequests = async (req, res, next) => {
   try {
     const {
-      limit = 10,
+      limit = 999999,
       offset = 0,
       email = "",
       firstName,
@@ -68,7 +68,10 @@ export const getRequest = async (req, res, next) => {
   try {
     const { requestId } = req.params;
 
-    const request = await Requests.findOne({ id: requestId });
+    const request = await Requests.findOne({ id: requestId }).populate(
+      "user",
+      "id email firstName lastName surname"
+    );
 
     return res.status(200).json(request);
   } catch (error) {

@@ -63,3 +63,15 @@ export const getRequests = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getRequest = async (req, res, next) => {
+  try {
+    const { requestId } = req.params;
+
+    const request = await Requests.findOne({ id: requestId });
+
+    return res.status(200).json(request);
+  } catch (error) {
+    next(error);
+  }
+};

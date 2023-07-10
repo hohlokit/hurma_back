@@ -23,6 +23,8 @@ app.use(cors({}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use("/public", express.static("uploads"));
+
 app.use(formData.parse());
 
 app.use("/api", routes);

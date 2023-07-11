@@ -1,8 +1,9 @@
 import createHttpError from "http-errors";
 
 import { Requests } from "../models/requests.js";
-import requestStatuses from "../enums/request-statuses.js";
 import { Users } from "../models/users.js";
+
+import requestStatuses from "../enums/request-statuses.js";
 
 export const updateRequest = async (req, res, next) => {
   try {
@@ -15,12 +16,12 @@ export const updateRequest = async (req, res, next) => {
         `Status should be one of [${Object.values(requestStatuses).join(", ")}]`
       );
 
-    const user = await Requests.findOneAndUpdate(
+    const request = await Requests.findOneAndUpdate(
       { id: requestId },
       { status }
     ).populate("user", "id email firstName lastName surname");
 
-    return res.status(200).json(user);
+    return res.status(200).json(request);
   } catch (error) {
     next(error);
   }

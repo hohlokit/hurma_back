@@ -16,12 +16,21 @@ export const updateRequest = async (req, res, next) => {
         `Status should be one of [${Object.values(requestStatuses).join(", ")}]`
       );
 
-    const request = await Requests.findOneAndUpdate(
-      { id: requestId },
-      { status }
-    ).populate("user", "id email firstName lastName surname");
+    const request = await Requests.findOne({ id: requestId });
+    if (!request)
+      throw createHttpError(400, "Cannot find request with provided id");
+    if (request.status !== requestStatuses.ON_REVIEW)
+      throw createHttpError(
+        400,
+        `This request already reviewed. Current status: ${request.status}`
+      );
 
-    return res.status(200).json(request);
+    const updated = await Requests.findOneAndUpdate(
+      { id: requestId },
+      { status },
+      { returnDocument: "after" }
+    ).populate("user", "id email firstName lastName surname");
+    return res.status(200).json(updated);
   } catch (error) {
     next(error);
   }

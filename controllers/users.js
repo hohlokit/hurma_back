@@ -7,7 +7,7 @@ import userStatuses from "../enums/user-statuses.js";
 export const getSelf = async (req, res, next) => {
   try {
     const { id } = req.user;
-
+    console.log(req.user, id);
     const user = await Users.findOne(
       { id },
       {
@@ -112,6 +112,7 @@ export const changeUserStatus = async (req, res, next) => {
 
     const user = await Users.findOne({ id: userId });
     if (!user) throw createHttpError(400, "Cannot find user with provided id");
+
     if (!Object.values(userStatuses).includes(status))
       throw createHttpError(
         400,

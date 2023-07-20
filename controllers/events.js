@@ -1,8 +1,8 @@
 import createHttpError from "http-errors";
 import moment from "moment";
 
-import { Users } from "../models/users";
-import { Events } from "../models/events";
+import { Users } from "../models/users.js";
+import { Events } from "../models/events.js";
 
 export const createEvent = async (req, res, next) => {
   try {

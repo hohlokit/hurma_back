@@ -10,4 +10,5 @@ router.use("/users", userRouter);
 router.use("/requests", requestRouter);
 router.use("/auth", authRouter);
 router.use("/events", eventRouter);
+
 export default router;

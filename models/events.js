@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import { ObjectId } from "mongodb";
-import generateId from "../utils/generate-id";
+import generateId from "../utils/generate-id.js";
 
 const event = new mongoose.Schema(
   {

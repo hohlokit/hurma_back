@@ -12,15 +12,33 @@ export const createEvent = async (req, res, next) => {
     if (moment(startDate).isAfter(moment(endDate)))
       throw createHttpError(400, "Start date should not be after end date");
 
-    const curr = await Users.findOne({ id: req.user.id });
-
-    const event = await Events.create({
+    const create = {
       name,
       description,
       startDate,
       endDate,
       creators: [curr._id],
-    });
+    };
+
+    let eventBanner;
+    if (req.files) {
+      const { banner } = req.files;
+
+      eventBanner = banner;
+      if (eventBanner) {
+        const { filename } = await saveFile({
+          file: avatar,
+          savePath: `/banners`,
+          newFilename: req.user.id,
+        });
+
+        create["banner"] = `/public/banners/${filename}`;
+      }
+    }
+
+    const curr = await Users.findOne({ id: req.user.id });
+
+    const event = await Events.create(create);
 
     return res.status(200).json(event);
   } catch (error) {
@@ -35,6 +53,26 @@ export const updateEvent = async (req, res, next) => {
     if (!name) throw createHttpError(400, "Event name is missing");
     if (moment(startDate).isAfter(moment(endDate)))
       throw createHttpError(400, "Start date should not be after end date");
+
+    let eventBanner;
+    if (req.files) {
+      const { banner } = req.files;
+
+      eventBanner = banner;
+      if (eventBanner === false) {
+        eventBanner = null;
+
+        create["banner"] = null;
+      } else if (eventBanner) {
+        const { filename } = await saveFile({
+          file: avatar,
+          savePath: `/banners`,
+          newFilename: req.user.id,
+        });
+
+        create["banner"] = `/public/banners/${filename}`;
+      }
+    }
 
     const event = await Events.updateOne({
       name,

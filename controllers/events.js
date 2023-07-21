@@ -17,7 +17,6 @@ export const createEvent = async (req, res, next) => {
       description,
       startDate,
       endDate,
-      creators: [curr._id],
     };
 
     let eventBanner;
@@ -37,7 +36,8 @@ export const createEvent = async (req, res, next) => {
     }
 
     const curr = await Users.findOne({ id: req.user.id });
-
+    create["creators"] = [curr._id];
+    
     const event = await Events.create(create);
 
     return res.status(200).json(event);

@@ -112,7 +112,7 @@ export const getEvents = async (req, res, next) => {
       .populate("creators", "id email firstName lastName surname avatar")
       .populate("members", "id email firstName lastName surname avatar");
 
-    const count = await Events.find(query);
+    const count = await Events.countDocuments(query);
 
     return res.status(200).json({ events, count });
   } catch (error) {

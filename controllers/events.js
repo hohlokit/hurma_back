@@ -1,6 +1,7 @@
 import createHttpError from "http-errors";
 import moment from "moment";
 
+import saveFile from '../utils/save-file.js'
 import { Users } from "../models/users.js";
 import { Events } from "../models/events.js";
 
@@ -37,7 +38,7 @@ export const createEvent = async (req, res, next) => {
 
     const curr = await Users.findOne({ id: req.user.id });
     create["creators"] = [curr._id];
-    
+
     const event = await Events.create(create);
 
     return res.status(200).json(event);

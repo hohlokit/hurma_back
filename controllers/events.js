@@ -27,7 +27,7 @@ export const createEvent = async (req, res, next) => {
       eventBanner = banner;
       if (eventBanner) {
         const { filename } = await saveFile({
-          file: avatar,
+          file: banner,
           savePath: `/banners`,
           newFilename: req.user.id,
         });
@@ -66,7 +66,7 @@ export const updateEvent = async (req, res, next) => {
         create["banner"] = null;
       } else if (eventBanner) {
         const { filename } = await saveFile({
-          file: avatar,
+          file: banner,
           savePath: `/banners`,
           newFilename: req.user.id,
         });

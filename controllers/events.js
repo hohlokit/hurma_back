@@ -10,14 +10,18 @@ export const createEvent = async (req, res, next) => {
     const { name, description, startDate, endDate } = req.body;
 
     if (!name) throw createHttpError(400, "Event name is missing");
-    if (moment(startDate).isAfter(moment(endDate)))
-      throw createHttpError(400, "Start date should not be after end date");
+    if (!startDate || !endDate)
+      throw createHttpError("Provide both of start and end dates");
+    if (moment(startDate).isAfter(endDate))
+      throw createHttpError(400, "Start date should be before end");
+    if (moment(startDate).isBefore(moment))
+      throw createHttpError(400, "Start date should be in future");
 
-      const create = {
+    const create = {
       name,
       description,
-      startDate: moment(startDate).utcOffset(false).valueOf(),
-      endDate: moment(endDate).utcOffset(false).valueOf(),
+      startDate,
+      endDate,
     };
 
     let eventBanner;
@@ -54,7 +58,7 @@ export const updateEvent = async (req, res, next) => {
     if (!name) throw createHttpError(400, "Event name is missing");
     if (moment(startDate).isAfter(moment(endDate)))
       throw createHttpError(400, "Start date should not be after end date");
-
+    const upd = { name, description, startDate, endDate };
     let eventBanner;
     if (req.files) {
       const { banner } = req.files;
@@ -63,7 +67,7 @@ export const updateEvent = async (req, res, next) => {
       if (eventBanner === false) {
         eventBanner = null;
 
-        create["banner"] = null;
+        upd["banner"] = null;
       } else if (eventBanner) {
         const { filename } = await saveFile({
           file: banner,
@@ -71,16 +75,11 @@ export const updateEvent = async (req, res, next) => {
           newFilename: req.user.id,
         });
 
-        create["banner"] = `/public/banners/${filename}`;
+        upd["banner"] = `/public/banners/${filename}`;
       }
     }
 
-    const event = await Events.updateOne({
-      name,
-      description,
-      startDate,
-      endDate,
-    });
+    const event = await Events.updateOne(upd);
 
     return res.status(200).json(event);
   } catch (error) {

@@ -106,7 +106,7 @@ export const getEvents = async (req, res, next) => {
     const { limit = 999999, offset = 0 } = req.query;
 
     const query = {};
-    const events = await Events.find()
+    const events = await Events.find(query)
       .skip(offset * limit)
       .limit(limit)
       .populate("creators", "id email firstName lastName surname avatar")

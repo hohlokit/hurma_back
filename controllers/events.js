@@ -54,6 +54,7 @@ export const createEvent = async (req, res, next) => {
 export const updateEvent = async (req, res, next) => {
   try {
     const { name, description, startDate, endDate } = req.body;
+    const { eventId } = req.params;
 
     if (!name) throw createHttpError(400, "Event name is missing");
     if (moment(startDate).isAfter(moment(endDate)))
@@ -79,7 +80,7 @@ export const updateEvent = async (req, res, next) => {
       }
     }
 
-    const event = await Events.updateOne(upd);
+    const event = await Events.updateOne({ id: eventId }, upd);
 
     return res.status(200).json(event);
   } catch (error) {

@@ -104,7 +104,7 @@ export const getEvent = async (req, res, next) => {
 export const getEvents = async (req, res, next) => {
   try {
     const { limit = 999999, offset = 0 } = req.query;
-
+   
     const events = await Events.find({})
       .skip(offset * limit)
       .limit(limit)

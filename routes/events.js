@@ -10,8 +10,8 @@ import {
 
 const router = express.Router();
 
-router.get("/", verifyToken, getEvent);
-router.get("/:eventId", verifyToken, getEvents);
+router.get("/", verifyToken, getEvents);
+router.get("/:eventId", verifyToken, getEvent);
 
 router.post("/create", verifyToken, createEvent);
 

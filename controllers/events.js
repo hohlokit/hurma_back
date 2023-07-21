@@ -13,7 +13,7 @@ export const createEvent = async (req, res, next) => {
     if (moment(startDate).isAfter(moment(endDate)))
       throw createHttpError(400, "Start date should not be after end date");
 
-    const create = {
+      const create = {
       name,
       description,
       startDate: moment(startDate).utcOffset(false).valueOf(),

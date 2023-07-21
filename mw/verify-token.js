@@ -25,6 +25,8 @@ export const verifyToken = (req, _, next) => {
         throw createHttpError(401, "User disabled");
       if (user.role !== userRoles.ADMIN)
         throw createHttpError(403, "User is not admin");
+
+      req.user = user;
       next();
     });
   } catch (error) {

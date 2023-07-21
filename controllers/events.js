@@ -1,7 +1,7 @@
 import createHttpError from "http-errors";
 import moment from "moment";
 
-import saveFile from '../utils/save-file.js'
+import saveFile from "../utils/save-file.js";
 import { Users } from "../models/users.js";
 import { Events } from "../models/events.js";
 
@@ -16,8 +16,8 @@ export const createEvent = async (req, res, next) => {
     const create = {
       name,
       description,
-      startDate,
-      endDate,
+      startDate: moment(startDate).utcOffset(false).valueOf(),
+      endDate: moment(endDate).utcOffset(false).valueOf(),
     };
 
     let eventBanner;

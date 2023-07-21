@@ -104,14 +104,17 @@ export const getEvent = async (req, res, next) => {
 export const getEvents = async (req, res, next) => {
   try {
     const { limit = 999999, offset = 0 } = req.query;
-   
-    const events = await Events.find({})
+
+    const query = {};
+    const events = await Events.find()
       .skip(offset * limit)
       .limit(limit)
       .populate("creators", "id email firstName lastName surname avatar")
       .populate("members", "id email firstName lastName surname avatar");
 
-    return res.status(200).json(events);
+    const count = await Events.find(query);
+
+    return res.status(200).json({ events, count });
   } catch (error) {
     next(error);
   }

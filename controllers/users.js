@@ -90,12 +90,21 @@ export const getUser = async (req, res, next) => {
 
 export const getUsers = async (req, res, next) => {
   try {
-    const { limit, offset } = req.query;
+    const { limit, offset, search } = req.query;
 
     const _limit = limit || 10;
     const _offset = limit * offset;
 
     const query = {};
+    if (search) {
+      query.$or = [
+        { email: { $regex: search } },
+        { firstName: { $regex: search } },
+        { lastName: { $regex: search } },
+        { surname: { $regex: search } },
+      ];
+    }
+
     const users = await Users.find(query).skip(_offset).limit(_limit);
     const count = await Users.countDocuments(query);
 

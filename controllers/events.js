@@ -111,7 +111,8 @@ export const getEvents = async (req, res, next) => {
     if (name) query.name = { $regex: name };
     if (startDate) {
       query.startDate = { $gte: startDate };
-    } else if (endDate) {
+    }
+    if (endDate) {
       query.endDate = { $lte: endDate };
     }
 

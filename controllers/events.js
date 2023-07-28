@@ -108,13 +108,9 @@ export const getEvents = async (req, res, next) => {
 
     const query = {};
 
-    if (name) query.name = { $regex: name };
-    if (startDate) {
-      query.startDate = { $gte: startDate };
-    }
-    if (endDate) {
-      query.endDate = { $lte: endDate };
-    }
+    if (name) query.name = { $regex: name, $options: "i" };
+    if (startDate) query.startDate = { $gte: startDate };
+    if (endDate) query.endDate = { $lte: endDate };
 
     const events = await Events.find(query)
       .skip(offset * limit)

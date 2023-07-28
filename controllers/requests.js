@@ -48,10 +48,10 @@ export const getRequests = async (req, res, next) => {
     } = req.query;
 
     const findUsers = {};
-    if (email) findUsers.email = { $regex: email };
-    if (firstName) findUsers.firstName = { $regex: firstName };
-    if (lastName) findUsers.lastName = { $regex: lastName };
-    if (surname) findUsers.surname = { $regex: surname };
+    if (email) findUsers.email = { $regex: email, $options: "i" };
+    if (firstName) findUsers.firstName = { $regex: firstName, $options: "i" };
+    if (lastName) findUsers.lastName = { $regex: lastName, $options: "i" };
+    if (surname) findUsers.surname = { $regex: surname, $options: "i" };
 
     const users = await Users.find(findUsers);
     const usersIds = users.map(({ _id }) => _id);

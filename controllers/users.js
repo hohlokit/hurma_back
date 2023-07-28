@@ -98,10 +98,10 @@ export const getUsers = async (req, res, next) => {
     const query = {};
     if (search) {
       query.$or = [
-        { email: { $regex: search } },
-        { firstName: { $regex: search } },
-        { lastName: { $regex: search } },
-        { surname: { $regex: search } },
+        { email: { $regex: search, $options: "i" } },
+        { firstName: { $regex: search, $options: "i" } },
+        { lastName: { $regex: search, $options: "i" } },
+        { surname: { $regex: search, $options: "i" } },
       ];
     }
 
